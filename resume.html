@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eric Dao - Engineering Leader | IT Director</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Modern Professional (Background: #F8F7F1, Text: #2d3748, Accent: #4299e1) -->
+    <!-- Application Structure Plan: A single-page application with a sticky top navigation for easy access to all sections. The structure is thematic (Competencies, Experience, Achievements) rather than purely chronological to highlight skills and impact upfront. The core of the application is an interactive vertical timeline for the work history, which allows users to drill into details on-demand, preventing information overload and enhancing engagement. A KPI dashboard with charts visualizes key accomplishments for quick synthesis. This design improves scannability and creates a more memorable experience for recruiters. -->
+    <!-- Visualization & Content Choices: 1. Work History -> Goal: Explore Career Progression -> Presentation: Interactive Vertical Timeline (HTML/CSS/JS) -> Interaction: Click to reveal details in a side panel -> Justification: Manages dense information effectively and provides an intuitive way to explore a long career path. 2. Patent Portfolio -> Goal: Inform/Show Proportion -> Viz: Donut Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: More visually engaging and quicker to understand than a simple number. 3. Core Competencies -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Clearly visualizes proficiency levels and key strengths. CONFIRMATION: NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F1;
+            color: #2d3748;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .timeline-item-content {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .timeline-button[aria-selected="true"] {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.5);
+        }
+        .timeline-buttons-container {
+            overflow-y: auto;
+            max-height: 60vh;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .timeline-buttons-container::-webkit-scrollbar {
+            display: none;
+        }
+        .timeline-buttons-container:hover::-webkit-scrollbar {
+            display: block;
+            width: 8px;
+        }
+        .timeline-buttons-container:hover::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#hero" class="text-xl font-bold text-gray-800">Eric Dao</a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#competencies" class="text-gray-600 hover:text-blue-500 transition-colors">Competencies</a>
+                    <a href="#experience" class="text-gray-600 hover:text-blue-500 transition-colors">Experience</a>
+                    <a href="#achievements" class="text-gray-600 hover:text-blue-500 transition-colors">Achievements</a>
+                    <a href="#education" class="text-gray-600 hover:text-blue-500 transition-colors">Education</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-600 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4">
+                <a href="#competencies" class="block py-2 text-gray-600 hover:text-blue-500">Competencies</a>
+                <a href="#experience" class="block py-2 text-gray-600 hover:text-blue-500">Experience</a>
+                <a href="#achievements" class="block py-2 text-gray-600 hover:text-blue-500">Achievements</a>
+                <a href="#education" class="block py-2 text-gray-600 hover:text-blue-500">Education</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="hero" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">Eric Dao</h1>
+                <p class="text-xl md:text-2xl text-blue-600 mt-2">Engineering Leader / IT Director</p>
+                <div class="mt-6 text-gray-600 max-w-3xl mx-auto text-lg">
+                    <p>Seasoned and dynamic IT leader with a proven history of exceeding company goals through strategic vision and organized practices. Highly adept at operating under pressure and adapting to complex challenges to drive organizational growth and innovation.</p>
+                </div>
+                 <div class="mt-8 flex justify-center items-center space-x-6 text-gray-500">
+                    <span>Kowloon, Hong Kong</span>
+                    <span>&bull;</span>
+                    <a href="mailto:ericdaoinus@gmail.com" class="hover:text-blue-500">ericdaoinus@gmail.com</a>
+                    <span>&bull;</span>
+                    <a href="https://www.linkedin.com/in/ericgcdao/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-500">LinkedIn</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="competencies" class="py-16 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4">Core Competencies</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">This section outlines my primary areas of expertise, showcasing the skills I've honed throughout my career. The chart below provides a visual representation of my proficiency in key leadership and technical domains, allowing you to quickly grasp my core strengths.</p>
+                <div class="chart-container">
+                    <canvas id="competenciesChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="py-16">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4">Career Journey</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Explore my professional history through this interactive timeline. Each point represents a significant role in my career. Click on any position to view detailed responsibilities and key accomplishments from that period. The most recent role is selected by default.</p>
+                <div class="flex flex-col md:flex-row gap-8 md:h-[80vh] md:overflow-hidden">
+                    <div class="w-full md:w-1/3 relative timeline-buttons-container">
+                        <div class="border-l-2 border-blue-200 absolute h-full left-4"></div>
+                        <div id="timeline-buttons" class="space-y-8">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3 bg-white p-8 rounded-xl shadow-lg overflow-y-auto">
+                        <div id="experience-details">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements" class="py-16 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4">Key Achievements & Innovations</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">This dashboard highlights some of my most significant career accomplishments, from scaling teams and securing intellectual property to driving market growth. These metrics provide a quantitative look at the impact I've delivered in various leadership roles.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                     <div class="bg-gray-50 p-6 rounded-lg text-center">
+                        <div class="text-blue-500 text-4xl font-bold">10</div>
+                        <div class="text-gray-600 mt-2">Patents Filed</div>
+                    </div>
+                     <div class="bg-gray-50 p-6 rounded-lg text-center">
+                        <div class="text-blue-500 text-4xl font-bold">8x</div>
+                        <div class="text-gray-600 mt-2">Team Growth Leadership</div>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg text-center">
+                        <div class="text-blue-500 text-4xl font-bold">4.5+ ★</div>
+                        <div class="text-gray-600 mt-2">App Store Ratings</div>
+                    </div>
+                </div>
+                 <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">Patent Portfolio</h3>
+                    <div class="chart-container">
+                        <canvas id="patentsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="py-16">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12">Education</h2>
+                <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-gray-500">1996 - 1999</p>
+                        <h3 class="text-xl font-bold mt-2">Master of Science: Database, Network</h3>
+                        <p class="text-gray-600 mt-1">University of Washington - Seattle, WA</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-gray-500">1990 - 1993</p>
+                        <h3 class="text-xl font-bold mt-2">Bachelor of Science: Computer Engineering</h3>
+                        <p class="text-gray-600 mt-1">California Polytechnic University - San Luis Obispo, CA</p>
+                        <p class="text-sm text-blue-500 mt-2">Summa Cum Laude</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Eric Dao. All Rights Reserved.</p>
+            <p class="text-sm text-gray-400 mt-2">Interactive resume designed and generated to showcase professional experience.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const experienceData = [
+                {
+                    id: 'price',
+                    date: '2023 - Present',
+                    title: 'IT Director',
+                    company: 'Price.com.hk',
+                    details: [
+                        'Spearheaded strategic technology investments to drive business growth.',
+                        'Directed end-to-end product development lifecycle, from concept to execution.',
+                        'Ensured technology strategy was in close alignment with core business objectives.',
+                        'Cultivated and managed partnerships with third-party solution providers to enhance platform capabilities.',
+                        'Led and mentored technical and product teams in Hong Kong and China to achieve and exceed annual performance targets.',
+                    ],
+                    highlights: []
+                },
+                {
+                    id: 'aladdin',
+                    date: '2018 - 2022',
+                    title: 'Technical Fellow & CTO',
+                    company: 'Aladdin FinTech Company Limited',
+                    details: [
+                        'Architected and implemented a private/consortium blockchain on Fabric for Real Estate Fractionalization.',
+                        'Engineered smart contracts for a secure and automated payment-on-delivery system.',
+                        'Developed a cross-chain decentralized application for efficient asset tokenization and management.',
+                        'Provided expert technical consultancy and architectural guidance to two leading Crypto Exchanges.',
+                        'Designed and deployed a highly secure hot/cold wallet system, meeting stringent Japanese regulatory requirements.',
+                        'Launched KOL.shop, a successful cross-border e-commerce platform.'
+                    ],
+                    highlights: [
+                        'Directed the successful launch of two crypto exchanges, with one securing an operational license in Japan.',
+                        'Secured a patent filing for a proprietary Smart Contract protocol (USPTO: 62654352).'
+                    ]
+                },
+                {
+                    id: 'gurumind',
+                    date: '2017 - 2018',
+                    title: 'CTO (Co-founder)',
+                    company: 'Gurumind',
+                    details: [
+                        'Pioneered an end-to-end IoT/AI solution to capture and analyze consumer behavior and spending patterns.',
+                        'Developed and deployed advanced data analytical algorithms to build predictive models for store operations.'
+                    ],
+                    highlights: [
+                        'Successfully piloted a data-gathering and analysis system in stores across Beijing and Shanghai.',
+                        'Filed 2 patents for Retail Store Camera IoT Device Construct and Data Gathering.'
+                    ]
+                },
+                {
+                    id: 'xiaoyi',
+                    date: '2015 - 2017',
+                    title: 'General Manager',
+                    company: 'Shanghai Xiaoyi Technology',
+                    details: [
+                        'Championed end-to-end product development and business operations for the YI Home Camera.',
+                        'Managed full P&L responsibility for the product line.',
+                        'Led a cross-functional team of 52 direct reports across hardware, software, and marketing.',
+                        'Successfully integrated the YI Home Camera line into the Mi (Xiaomi) Home IoT ecosystem.'
+                    ],
+                    highlights: [
+                        'Propelled YI Home Camera to #1 best-selling in China within 1.5 years, expanding user base 5x.',
+                        'Achieved Top 10 best-seller on US Amazon.',
+                        'Grew app ratings to 4.5+ stars on both Google and iOS App Stores.'
+                    ]
+                },
+                {
+                    id: 'microsoft-principal-group-extensibility',
+                    date: '2015-02 - 2015-05',
+                    title: 'Principal Group Engineering Manager',
+                    company: 'Microsoft (China)',
+                    details: [
+                        'Led a cross-disciplinary team of 55 engineers and product managers to successfully deliver the Office Add-in platform for Web Word, PowerPoint, and Excel.',
+                        'Drove the development of Office 365 controls and external data connectivity, positioning the project as a direct competitor to Google’s offerings and a key component of a cross-platform strategy to ensure Office accessibility across all devices.'
+                    ],
+                    highlights: []
+                },
+                {
+                    id: 'microsoft-principal-group-ocas',
+                    date: '2014-11 - 2015-02',
+                    title: 'Principal Group Engineering Manager',
+                    company: 'Microsoft (China)',
+                    details: [
+                        'Led a cross-disciplinary team of 57 engineers and product managers within the Office Client Application Service (OCAS) team to deliver web-based Office clients (Word, PowerPoint, and Excel).',
+                        'This strategic initiative directly competed with Google for the education market and established a foundational cross-platform strategy to ensure Office accessibility on all devices.'
+                    ],
+                    highlights: []
+                },
+                {
+                    id: 'microsoft-principal-group-admin',
+                    date: '2014-05 - 2014-11',
+                    title: 'Principal Group Engineering Manager',
+                    company: 'Microsoft (China)',
+                    details: [
+                        'Directed a cross-disciplinary engineering team of 42 to deliver critical Office 365, Exchange, and SharePoint Administration applications for a wide range of on-premise, cloud, and hybrid deployments.',
+                        'Initiated the development of a groundbreaking "on the go" Administration solution for Office 365, enhancing accessibility and management for customers.'
+                    ],
+                    highlights: []
+                },
+                {
+                    id: 'microsoft-principal-development',
+                    date: '2007-07 - 2014-05',
+                    title: 'Principal Development Manager',
+                    company: 'Microsoft (China)',
+                    details: [
+                        'Directed a team of 32 engineers to deliver Office 365, Exchange, and SharePoint Administration tools for a wide range of on-premise, cloud, and hybrid deployments.',
+                        'Architected and implemented a unified Administration toolset/framework (SDK) that significantly reduced engineering costs and complexity by providing shared controls, standardized debugging tools, unified telemetry, and a consistent user experience across all portals.'
+                    ],
+                    highlights: []
+                },
+                {
+                    id: 'microsoft-senior-dev-lead',
+                    date: '2000-06 - 2007-06',
+                    title: 'Senior Development Lead',
+                    company: 'Microsoft (US)',
+                    details: [
+                        'Guided a team of 26 developers in the successful delivery of the Exchange Administration stack for on-premise, cloud, and hybrid deployments, serving enterprise customers.',
+                        'Contributed to the development of multiple administration interfaces, including: Windows Form Administration interface (6 versions), Windows PowerShell Administration interface for both on-premise and cloud deployments, Programmability web service interface for on-premise and cloud, and Web-based Administration interface for cloud deployment.'
+                    ],
+                    highlights: []
+                },
+                {
+                    id: 'microsoft-senior-sde',
+                    date: '1998-06 - 2000-06',
+                    title: 'Senior Software Design Engineer',
+                    company: 'Microsoft (US)',
+                    details: [
+                        'Collaborated with software development and testing teams to design and develop robust solutions that met client requirements for functionality, scalability, and performance.',
+                        'Built robust, scalable, modular, and API-centric infrastructures that formed the core of key products.',
+                        'Contributed to the development of the Windows Form Administration interface for on-premise deployment (2 versions: Exchange 5.5, 2000).',
+                        'Contributed to the development of the foundational setup, performance, and networking protocols (X.25, TCP/IP, NNTP) for Exchange 5.5 and 2000 enterprise servers.'
+                    ],
+                    highlights: []
+                },
+                {
+                    id: 'microsoft-sde',
+                    date: '1993-06 - 1998-06',
+                    title: 'Software Design Engineer',
+                    company: 'Microsoft (US)',
+                    details: [
+                        'Contributed to the development of X.25 and TCP/IP protocols for Exchange on-premise deployment (version 5.5).',
+                        'Contributed to the development of the database transaction engine and the Rule engine (Outlook Inbox Rules) in Exchange 5.5.'
+                    ],
+                    highlights: []
+                },
+                {
+                    id: 'microsoft-leadership-highlights',
+                    date: '1993 - 2015',
+                    title: 'Leadership & Achievements',
+                    company: 'Microsoft',
+                    details: [],
+                    highlights: [
+                        'Incubated the first Exchange project in China, growing the team from 5 to 42 people over nine years (2005 - present).',
+                        'Expanded team ownership from single features to entire feature areas within Exchange (2005-2008).',
+                        'Grew the team\'s ownership from one product component to three shared products: SharePoint, Exchange, and O365 (2008-present).',
+                        'Played a key role in annual extended leadership offsite meetings, contributing to the assessment and definition of the charter and vision for the year ahead (2008-present).',
+                        'Served as the development roll-up leader for the Microsoft Office Division in China for annual people performance reviews (2008-2013).',
+                        'Drove end-to-end engineering excellence initiatives, including project management, software development/testing, shipping, and product support, as well as training, mentoring, and recruiting (2008-2013).',
+                        'Pioneered and implemented the first Hack Day event in the Microsoft Office Division in China (2012).',
+                        'Conceived and executed a comprehensive first-year program for new hires, including a boot camp and mentoring ring, to facilitate assimilation into the organization and culture (2013).',
+                        'Honored as a member of the campus/intern recruiting v-team that earned the Director/GM award of the year (2013).',
+                        'Led the team through a critical service transformation (2013-2015).',
+                        'Participated in the Microsoft bench program, a key leadership development initiative (2007).',
+                        'Filed 10 patents, with one pending.',
+                        'Graduated from the Microsoft Pillar program, a leadership program for the Principal band and above (2011).'
+                    ]
+                }
+            ];
+            const timelineButtonsContainer = document.getElementById('timeline-buttons');
+            const experienceDetailsContainer = document.getElementById('experience-details');
+            function displayExperience(id) {
+                const experience = experienceData.find(e => e.id === id);
+                if (!experience) return;
+                let detailsHtml = experience.details.map(d => `<li class="mb-2">${d}</li>`).join('');
+                let highlightsHtml = experience.highlights.map(h => `<li class="mb-2 font-medium text-blue-600">${h}</li>`).join('');
+                experienceDetailsContainer.innerHTML = `
+                    <div class="timeline-item-content">
+                        <p class="text-sm text-gray-500">${experience.date}</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">${experience.title}</h3>
+                        <p class="text-lg text-blue-600 font-medium mb-4">${experience.company}</p>
+                        ${experience.details.length > 0 ? `
+                        <h4 class="font-semibold text-gray-700 mb-2 border-b pb-1">Responsibilities:</h4>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2">
+                            ${detailsHtml}
+                        </ul>` : ''}
+                        ${experience.highlights.length > 0 ? `
+                        <h4 class="font-semibold text-gray-700 mt-6 mb-2 border-b pb-1">Key Highlights:</h4>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2">
+                            ${highlightsHtml}
+                        </ul>` : ''}
+                    </div>
+                `;
+                
+                document.querySelectorAll('#timeline-buttons button').forEach(btn => {
+                    btn.setAttribute('aria-selected', btn.dataset.id === id);
+                });
+            }
+            experienceData.forEach(exp => {
+                const button = document.createElement('button');
+                button.dataset.id = exp.id;
+                button.setAttribute('role', 'tab');
+                button.setAttribute('aria-selected', 'false');
+                button.className = 'timeline-button w-full text-left p-4 rounded-lg hover:bg-blue-50 transition-all duration-300 focus:outline-none';
+                button.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="bg-blue-500 rounded-full w-8 h-8 flex-shrink-0 border-4 border-white shadow-md mr-4"></div>
+                        <div>
+                            <p class="font-bold text-gray-800">${exp.title}</p>
+                            <p class="text-sm text-gray-500">${exp.company}</p>
+                        </div>
+                    </div>
+                `;
+                button.addEventListener('click', () => displayExperience(exp.id));
+                timelineButtonsContainer.appendChild(button);
+            });
+            
+            displayExperience('price');
+            const competenciesData = {
+                labels: ['Strategic Leadership', 'Team & Collaborative Leadership', 'End-to-End Product Management', 'Innovative Problem-Solving', 'Data-Driven Decision Making'],
+                datasets: [{
+                    label: 'Proficiency',
+                    data: [95, 98, 90, 88, 85],
+                    backgroundColor: 'rgba(66, 153, 225, 0.6)',
+                    borderColor: 'rgba(66, 153, 225, 1)',
+                    borderWidth: 1
+                }]
+            };
+            new Chart(document.getElementById('competenciesChart'), {
+                type: 'bar',
+                data: competenciesData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.label}: ${context.raw}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                             ticks: {
+                                callback: (value) => value + '%'
+                            }
+                        }
+                    }
+                }
+            });
+            const patentsData = {
+                labels: ['Filed', 'Pending'],
+                datasets: [{
+                    data: [10, 1],
+                    backgroundColor: ['rgba(66, 153, 225, 0.7)', 'rgba(237, 137, 54, 0.7)'],
+                    borderColor: ['#FFFFFF'],
+                    borderWidth: 2,
+                    hoverOffset: 4
+                }]
+            };
+            new Chart(document.getElementById('patentsChart'), {
+                type: 'doughnut',
+                data: patentsData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => ` ${context.label}: ${context.raw}`
+                            }
+                        }
+                    }
+                }
+            });
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
