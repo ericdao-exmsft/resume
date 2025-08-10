@@ -13,6 +13,7 @@
     <!-- Application Structure Plan: A single-page application with a sticky top navigation for easy access to all sections. The structure is thematic (Competencies, Experience, Achievements) rather than purely chronological to highlight skills and impact upfront. The core of the application is an interactive vertical timeline for the work history, which allows users to drill into details on-demand, preventing information overload and enhancing engagement. A KPI dashboard with charts visualizes key accomplishments for quick synthesis. This design improves scannability and creates a more memorable experience for recruiters. -->
     <!-- Visualization & Content Choices: 1. Work History -> Goal: Explore Career Progression -> Presentation: Interactive Vertical Timeline (HTML/CSS/JS) -> Interaction: Click to reveal details in a side panel -> Justification: Manages dense information effectively and provides an intuitive way to explore a long career path. 2. Patent Portfolio -> Goal: Inform/Show Proportion -> Viz: Donut Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: More visually engaging and quicker to understand than a simple number. 3. Core Competencies -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Clearly visualizes proficiency levels and key strengths. CONFIRMATION: NO SVG/Mermaid used. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link rel="icon" type="image/png" href="ed-favicon.png">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -38,25 +39,36 @@
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
         .timeline-button[aria-selected="true"] {
-            transform: scale(1.1);
-            box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+            background-color: #ebf8ff;
         }
         .timeline-buttons-container {
             overflow-y: auto;
-            max-height: 60vh;
             -ms-overflow-style: none;
-            scrollbar-width: none;
+            scrollbar-width: none; 
         }
         .timeline-buttons-container::-webkit-scrollbar {
             display: none;
         }
-        .timeline-buttons-container:hover::-webkit-scrollbar {
-            display: block;
-            width: 8px;
+        .scroll-hint::after {
+            content: 'SCROLL FOR MORE';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(66, 153, 225, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
         }
-        .timeline-buttons-container:hover::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 4px;
+        .timeline-buttons-container.is-scrollable:hover .scroll-hint::after {
+            opacity: 1;
         }
     </style>
 </head>
@@ -119,11 +131,11 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl font-bold text-center mb-4">Career Journey</h2>
                 <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Explore my professional history through this interactive timeline. Each point represents a significant role in my career. Click on any position to view detailed responsibilities and key accomplishments from that period. The most recent role is selected by default.</p>
-                <div class="flex flex-col md:flex-row gap-8 md:h-[80vh] md:overflow-hidden">
+                <div class="flex flex-col md:flex-row gap-8 md:h-[90vh] md:max-h-[800px] md:overflow-hidden">
                     <div class="w-full md:w-1/3 relative timeline-buttons-container">
                         <div class="border-l-2 border-blue-200 absolute h-full left-4"></div>
-                        <div id="timeline-buttons" class="space-y-8">
-                        </div>
+                        <div id="timeline-buttons" class="space-y-8"></div>
+                        <div class="scroll-hint"></div>
                     </div>
                     <div class="w-full md:w-2/3 bg-white p-8 rounded-xl shadow-lg overflow-y-auto">
                         <div id="experience-details">
@@ -195,12 +207,38 @@
                     date: '2023 - Present',
                     title: 'IT Director',
                     company: 'Price.com.hk',
+                    companyType: 'an e-commerce platform',
                     details: [
                         'Spearheaded strategic technology investments to drive business growth.',
                         'Directed end-to-end product development lifecycle, from concept to execution.',
                         'Ensured technology strategy was in close alignment with core business objectives.',
                         'Cultivated and managed partnerships with third-party solution providers to enhance platform capabilities.',
                         'Led and mentored technical and product teams in Hong Kong and China to achieve and exceed annual performance targets.',
+                    ],
+                    highlights: [
+                        'Received the Digital Transformation Corporate – Outstanding Award from Standard Chartered for two consecutive years (2023, 2024).',
+                        'Led the unification of user experience and codebase across all platforms.',
+                        'Drove a 20% year-over-year improvement in both merchant and user engagement.',
+                        'Accelerated the feature release cycle by a factor of 4x.',
+                        'Achieved a 30% reduction in service costs.',
+                        'Successfully prepared the platform for Generative Engine Optimization (GEO).',
+                        'Maintained a perfect record of zero security incidents.',
+                        'Achieved a 99.999% uptime.',
+                        'Cultivated a high-performance culture that resulted in zero attrition within the team.'
+                    ]
+                },
+                {
+                    id: 'pico',
+                    date: '2023-01 - 2023-06',
+                    title: 'Software Architect & Web3 Consultant',
+                    company: 'Pico Global',
+                    companyType: 'a global Brand and Event management company',
+                    details: [
+                        'Refined and updated service architecture to align with new business requirements.',
+                        'Implemented a modern software stack to reduce error uncertainty, raise service quality, and lower maintenance costs.',
+                        'Championed a best-in-class data pipeline processing architecture to improve the efficiency and effectiveness of lead discovery.',
+                        'Conducted thorough due diligence on business-relevant Web3 projects, providing management with key insights for strategic decision-making.',
+                        'Provided coaching and mentorship to senior IT team members on strategic technology investments and effective people management.'
                     ],
                     highlights: []
                 },
@@ -209,6 +247,7 @@
                     date: '2018 - 2022',
                     title: 'Technical Fellow & CTO',
                     company: 'Aladdin FinTech Company Limited',
+                    companyType: 'a FinTech and Web3 service company',
                     details: [
                         'Architected and implemented a private/consortium blockchain on Fabric for Real Estate Fractionalization.',
                         'Engineered smart contracts for a secure and automated payment-on-delivery system.',
@@ -219,7 +258,7 @@
                     ],
                     highlights: [
                         'Directed the successful launch of two crypto exchanges, with one securing an operational license in Japan.',
-                        'Secured a patent filing for a proprietary Smart Contract protocol (USPTO: 62654352).'
+                        'Secured a patent filing for a proprietary Smart Contract protocol for payment-on-delivery (USPTO: 62654352).'
                     ]
                 },
                 {
@@ -227,6 +266,7 @@
                     date: '2017 - 2018',
                     title: 'CTO (Co-founder)',
                     company: 'Gurumind',
+                    companyType: 'a new retail service, and data company',
                     details: [
                         'Pioneered an end-to-end IoT/AI solution to capture and analyze consumer behavior and spending patterns.',
                         'Developed and deployed advanced data analytical algorithms to build predictive models for store operations.'
@@ -241,11 +281,12 @@
                     date: '2015 - 2017',
                     title: 'General Manager',
                     company: 'Shanghai Xiaoyi Technology',
+                    companyType: 'an IOT hardware and service company under XiaoMi Smart Home umbrella',
                     details: [
                         'Championed end-to-end product development and business operations for the YI Home Camera.',
                         'Managed full P&L responsibility for the product line.',
-                        'Led a cross-functional team of 52 direct reports across hardware, software, and marketing.',
-                        'Successfully integrated the YI Home Camera line into the Mi (Xiaomi) Home IoT ecosystem.'
+                        'Led a cross-functional team of 52 direct reports, overseeing hardware/software development, production, and marketing, while reporting directly to the CEO.',
+                        'Successfully integrated the YI Home Camera product line into the Mi (Xiaomi) Home IoT ecosystem.'
                     ],
                     highlights: [
                         'Propelled YI Home Camera to #1 best-selling in China within 1.5 years, expanding user base 5x.',
@@ -257,7 +298,8 @@
                     id: 'microsoft-principal-group-extensibility',
                     date: '2015-02 - 2015-05',
                     title: 'Principal Group Engineering Manager',
-                    company: 'Microsoft (China)',
+                    company: 'Microsoft',
+                    companyType: 'a multinational software, service, and hardware company',
                     details: [
                         'Led a cross-disciplinary team of 55 engineers and product managers to successfully deliver the Office Add-in platform for Web Word, PowerPoint, and Excel.',
                         'Drove the development of Office 365 controls and external data connectivity, positioning the project as a direct competitor to Google’s offerings and a key component of a cross-platform strategy to ensure Office accessibility across all devices.'
@@ -268,7 +310,8 @@
                     id: 'microsoft-principal-group-ocas',
                     date: '2014-11 - 2015-02',
                     title: 'Principal Group Engineering Manager',
-                    company: 'Microsoft (China)',
+                    company: 'Microsoft',
+                    companyType: 'a multinational software, service, and hardware company',
                     details: [
                         'Led a cross-disciplinary team of 57 engineers and product managers within the Office Client Application Service (OCAS) team to deliver web-based Office clients (Word, PowerPoint, and Excel).',
                         'This strategic initiative directly competed with Google for the education market and established a foundational cross-platform strategy to ensure Office accessibility on all devices.'
@@ -279,7 +322,8 @@
                     id: 'microsoft-principal-group-admin',
                     date: '2014-05 - 2014-11',
                     title: 'Principal Group Engineering Manager',
-                    company: 'Microsoft (China)',
+                    company: 'Microsoft',
+                    companyType: 'a multinational software, service, and hardware company',
                     details: [
                         'Directed a cross-disciplinary engineering team of 42 to deliver critical Office 365, Exchange, and SharePoint Administration applications for a wide range of on-premise, cloud, and hybrid deployments.',
                         'Initiated the development of a groundbreaking "on the go" Administration solution for Office 365, enhancing accessibility and management for customers.'
@@ -290,7 +334,8 @@
                     id: 'microsoft-principal-development',
                     date: '2007-07 - 2014-05',
                     title: 'Principal Development Manager',
-                    company: 'Microsoft (China)',
+                    company: 'Microsoft',
+                    companyType: 'a multinational software, service, and hardware company',
                     details: [
                         'Directed a team of 32 engineers to deliver Office 365, Exchange, and SharePoint Administration tools for a wide range of on-premise, cloud, and hybrid deployments.',
                         'Architected and implemented a unified Administration toolset/framework (SDK) that significantly reduced engineering costs and complexity by providing shared controls, standardized debugging tools, unified telemetry, and a consistent user experience across all portals.'
@@ -301,7 +346,8 @@
                     id: 'microsoft-senior-dev-lead',
                     date: '2000-06 - 2007-06',
                     title: 'Senior Development Lead',
-                    company: 'Microsoft (US)',
+                    company: 'Microsoft',
+                    companyType: 'a multinational software, service, and hardware company',
                     details: [
                         'Guided a team of 26 developers in the successful delivery of the Exchange Administration stack for on-premise, cloud, and hybrid deployments, serving enterprise customers.',
                         'Contributed to the development of multiple administration interfaces, including: Windows Form Administration interface (6 versions), Windows PowerShell Administration interface for both on-premise and cloud deployments, Programmability web service interface for on-premise and cloud, and Web-based Administration interface for cloud deployment.'
@@ -312,7 +358,8 @@
                     id: 'microsoft-senior-sde',
                     date: '1998-06 - 2000-06',
                     title: 'Senior Software Design Engineer',
-                    company: 'Microsoft (US)',
+                    company: 'Microsoft',
+                    companyType: 'a multinational software, service, and hardware company',
                     details: [
                         'Collaborated with software development and testing teams to design and develop robust solutions that met client requirements for functionality, scalability, and performance.',
                         'Built robust, scalable, modular, and API-centric infrastructures that formed the core of key products.',
@@ -325,7 +372,8 @@
                     id: 'microsoft-sde',
                     date: '1993-06 - 1998-06',
                     title: 'Software Design Engineer',
-                    company: 'Microsoft (US)',
+                    company: 'Microsoft',
+                    companyType: 'a multinational software, service, and hardware company',
                     details: [
                         'Contributed to the development of X.25 and TCP/IP protocols for Exchange on-premise deployment (version 5.5).',
                         'Contributed to the development of the database transaction engine and the Rule engine (Outlook Inbox Rules) in Exchange 5.5.'
@@ -337,6 +385,7 @@
                     date: '1993 - 2015',
                     title: 'Leadership & Achievements',
                     company: 'Microsoft',
+                    companyType: 'a multinational software, service, and hardware company',
                     details: [],
                     highlights: [
                         'Incubated the first Exchange project in China, growing the team from 5 to 42 people over nine years (2005 - present).',
@@ -355,8 +404,9 @@
                     ]
                 }
             ];
-            const timelineButtonsContainer = document.getElementById('timeline-buttons');
+            const timelineButtonsContainer = document.querySelector('.timeline-buttons-container');
             const experienceDetailsContainer = document.getElementById('experience-details');
+
             function displayExperience(id) {
                 const experience = experienceData.find(e => e.id === id);
                 if (!experience) return;
@@ -366,7 +416,8 @@
                     <div class="timeline-item-content">
                         <p class="text-sm text-gray-500">${experience.date}</p>
                         <h3 class="text-2xl font-bold text-gray-800 mt-1">${experience.title}</h3>
-                        <p class="text-lg text-blue-600 font-medium mb-4">${experience.company}</p>
+                        <p class="text-lg text-blue-600 font-medium">${experience.company}</p>
+                        <p class="text-sm text-gray-500 italic mb-4">${experience.companyType}</p>
                         ${experience.details.length > 0 ? `
                         <h4 class="font-semibold text-gray-700 mb-2 border-b pb-1">Responsibilities:</h4>
                         <ul class="list-disc list-inside text-gray-600 space-y-2">
@@ -384,6 +435,7 @@
                     btn.setAttribute('aria-selected', btn.dataset.id === id);
                 });
             }
+
             experienceData.forEach(exp => {
                 const button = document.createElement('button');
                 button.dataset.id = exp.id;
@@ -400,8 +452,12 @@
                     </div>
                 `;
                 button.addEventListener('click', () => displayExperience(exp.id));
-                timelineButtonsContainer.appendChild(button);
+                document.getElementById('timeline-buttons').appendChild(button);
             });
+            
+            if (timelineButtonsContainer.scrollHeight > timelineButtonsContainer.clientHeight) {
+                timelineButtonsContainer.classList.add('is-scrollable');
+            }
             
             displayExperience('price');
             const competenciesData = {
