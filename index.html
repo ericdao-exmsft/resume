@@ -14,75 +14,230 @@
     <!-- Visualization & Content Choices: 1. Work History -> Goal: Explore Career Progression -> Presentation: Interactive Vertical Timeline (HTML/CSS/JS) -> Interaction: Click to reveal details in a side panel -> Justification: Manages dense information effectively and provides an intuitive way to explore a long career path. 2. Patent Portfolio -> Goal: Inform/Show Proportion -> Viz: Donut Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: More visually engaging and quicker to understand than a simple number. 3. Core Competencies -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Clearly visualizes proficiency levels and key strengths. CONFIRMATION: NO SVG/Mermaid used. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <link rel="icon" type="image/png" href="ed-favicon.png">
+    <!-- Design Tokens -->
     <style>
+        :root {
+            --bg: #F8F7F1;
+            --bg-alt: #ffffff;
+            --bg-soft: #f1efe6;
+            --text: #2d3748;
+            --text-soft: #4a5568;
+            --border: #e2e8f0;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-soft: #e6f1fe;
+            --radius-sm: 4px;
+            --radius-md: 10px;
+            --radius-lg: 18px;
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
+            --shadow-md: 0 6px 18px -4px rgba(0,0,0,0.12);
+            --grad-accent: linear-gradient(90deg,#1d4ed8 0%, #3b82f6 60%, #60a5fa 100%);
+        }
+        .dark {
+            --bg: #1b2431;              /* was #0f172a */
+            --bg-alt: #243142;          /* was #111c33 */
+            --bg-soft: #2d3b4e;         /* was #1e293b */
+            --text: #f5f7fa;            /* slightly warmer for readability */
+            --text-soft: #d1d8e2;       /* higher contrast than previous */
+            --border: #38495c;
+            --accent: #4ea6ff;          /* slightly lighter accent for AA on dark */
+            --accent-hover: #74baff;
+            --accent-soft: #1f3a52;     /* selection / active background */
+            --shadow-md: 0 8px 22px -6px rgba(0,0,0,0.55);
+        }
+        /* Harmonize legacy utility classes in dark mode for consistent readability */
+        .dark .bg-white { background-color: var(--bg-alt) !important; }
+        .dark .bg-gray-50 { background-color: var(--bg-soft) !important; }
+        .dark .text-gray-800 { color: var(--text) !important; }
+        .dark .text-gray-700 { color: var(--text) !important; }
+        .dark .text-gray-600 { color: var(--text-soft) !important; }
+        .dark .text-gray-500 { color: #9aa5b1 !important; }
+        .dark .timeline-button[aria-selected="true"] {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-soft), 0 0 0 4px rgba(78,166,255,.55);
+        }
+        /* Tone down chart filter so text stays crisp */
+        .dark canvas { filter: brightness(1.04) contrast(1.02); }
+
+        /* Optional: subtle surface elevation tweak for dark to separate layers */
+        .dark .e-surface,
+        .dark .timeline-button {
+            box-shadow: 0 2px 4px -1px rgba(0,0,0,0.5), 0 4px 14px -4px rgba(0,0,0,0.55);
+        }
+        /* Improve body text clarity */
+        .dark body { -webkit-font-smoothing: antialiased; }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F8F7F1;
-            color: #2d3748;
+            background: var(--bg);
+            color: var(--text);
+            transition: background .4s ease, color .4s ease;
         }
-        .chart-container {
+        .e-surface {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: background .4s, border-color .4s, box-shadow .3s;
+        }
+        .e-surface:hover {
+            box-shadow: var(--shadow-md);
+        }
+        .pro-heading {
+            letter-spacing: -0.02em;
+        }
+        .accent-gradient-text {
+            background: var(--grad-accent);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .nav-link {
             position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 350px;
+            padding: .25rem .5rem;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-                max-height: 400px;
-            }
+        .nav-link:after {
+            content:"";
+            position:absolute;
+            left:0; bottom:-4px;
+            height:2px; width:0;
+            background: var(--grad-accent);
+            border-radius:2px;
+            transition: width .35s cubic-bezier(.4,.0,.2,1);
         }
-        .timeline-item-content {
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        .nav-link:hover:after,
+        .nav-link[aria-current="true"]:after {
+            width:100%;
+        }
+        .timeline-button {
+            position:relative;
+            background: var(--bg-alt);
+            border:1px solid var(--border);
         }
         .timeline-button[aria-selected="true"] {
-            transform: scale(1.05);
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-            background-color: #ebf8ff;
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-soft), 0 0 0 4px var(--accent);
         }
+        .timeline-button:focus-visible {
+            outline:2px solid var(--accent);
+            outline-offset:2px;
+        }
+        .timeline-item-content {
+            animation: fadeSlide .45s ease;
+        }
+        @keyframes fadeSlide {
+            from { opacity:0; transform: translateY(6px); }
+            to { opacity:1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .timeline-item-content, .nav-link:after { animation:none; transition:none; }
+        }
+        /* KPI snapshot grid */
+        .kpi-tile {
+            background: var(--bg-alt);
+            border:1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding:1rem 1.1rem;
+            display:flex;
+            flex-direction:column;
+            gap:.15rem;
+            box-shadow: var(--shadow-xs);
+            transition: transform .35s;
+        }
+        .kpi-tile:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        /* Career Journey sidebar scroll fix */
         .timeline-buttons-container {
             overflow-y: auto;
-            -ms-overflow-style: none;
-            scrollbar-width: none; 
+            padding-right: .5rem;
+            height: 100%;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-soft);
+            position: relative;
         }
         .timeline-buttons-container::-webkit-scrollbar {
-            display: none;
+            width: 8px;
         }
-        .scroll-hint::after {
-            content: 'SCROLL FOR MORE';
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(66, 153, 225, 0.8);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            pointer-events: none;
+        .timeline-buttons-container::-webkit-scrollbar-track {
+            background: var(--bg-soft);
+            border-radius: 8px;
         }
-        .timeline-buttons-container.is-scrollable:hover .scroll-hint::after {
-            opacity: 1;
+        .timeline-buttons-container::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 8px;
+            background-clip: padding-box;
         }
+        .timeline-buttons-container::after {
+            content:"";
+            position:absolute;
+            left:0; right:0; bottom:0;
+            height:34px;
+            pointer-events:none;
+            background: linear-gradient(to bottom, rgba(248,247,241,0), var(--bg));
+        }
+        .dark .timeline-buttons-container::after {
+            background: linear-gradient(to bottom, rgba(15,23,42,0), var(--bg));
+        }
+        @media (min-width:768px){
+            /* Allocate vertical space minus top/bottom paddings (adjust as needed) */
+            .timeline-buttons-container {
+                max-height: calc(90vh - 2rem);
+            }
+        }
+        @media print {
+            nav, #competencies, #achievements .chart-container, .theme-controls, .scroll-hint, .dark-toggle, .print-btn { display:none !important; }
+            body { background:#ffffff; color:#000; }
+            .e-surface, .kpi-tile { box-shadow:none !important; border:1px solid #999; }
+            a { color:#000; text-decoration:none; }
+            #experience { page-break-before: avoid; }
+            .no-print { display:none !important; }
+            .print-only { display:block !important; }
+            #experience .experience-print-block { page-break-inside: avoid; margin-bottom: 1.2rem; }
+            #experience .experience-print-block h3 { margin: .25rem 0 .15rem; font-size: 1.15rem; }
+            #experience .experience-print-block ul { margin: .25rem 0 .35rem 1.1rem; }
+        }
+        /* Dark mode chart inversion helper */
+        .dark canvas { filter: brightness(1.05) contrast(1.05); }
     </style>
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Person",
+      "name":"Eric Dao",
+      "jobTitle":"Engineering Leader / IT Director",
+      "email":"mailto:ericdaoinus@gmail.com",
+      "url":"https://www.linkedin.com/in/ericgcdao/",
+      "address":{"@type":"PostalAddress","addressLocality":"Kowloon","addressCountry":"HK"},
+      "knowsAbout":[
+        "Strategic Technology Leadership","Cloud Platforms","High Availability Architecture",
+        "Product Engineering Management","Data-Driven Transformation","AI / ML Adoption",
+        "Blockchain / Web3 Architecture","IoT Systems","Operational Excellence"
+      ],
+      "alumniOf":[
+        {"@type":"CollegeOrUniversity","name":"University of Washington"},
+        {"@type":"CollegeOrUniversity","name":"California Polytechnic University"}
+      ]
+    }
+    </script>
+    <!-- ...existing code... -->
 </head>
 <body class="antialiased">
 
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+    <nav class="bg-white/80 dark:bg-[#0f172acc] backdrop-blur-md sticky top-0 z-50 shadow-sm supports-backdrop-blur">
         <div class="container mx-auto px-6 py-3">
             <div class="flex justify-between items-center">
                 <a href="#hero" class="text-xl font-bold text-gray-800">Eric Dao</a>
-                <div class="hidden md:flex space-x-6">
+                <div class="hidden md:flex space-x-6 items-center">
                     <a href="#competencies" class="text-gray-600 hover:text-blue-500 transition-colors">Competencies</a>
                     <a href="#experience" class="text-gray-600 hover:text-blue-500 transition-colors">Experience</a>
                     <a href="#achievements" class="text-gray-600 hover:text-blue-500 transition-colors">Achievements</a>
                     <a href="#education" class="text-gray-600 hover:text-blue-500 transition-colors">Education</a>
+                    <button id="themeToggle" class="dark-toggle text-sm px-3 py-1.5 rounded-md border border-transparent hover:border-blue-400 transition-colors" aria-label="Toggle dark mode">🌓</button>
+                    <button id="printResume" class="print-btn text-sm px-3 py-1.5 rounded-md border border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" aria-label="Print / Save PDF">Print</button>
                 </div>
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="text-gray-600 focus:outline-none">
@@ -90,33 +245,64 @@
                     </button>
                 </div>
             </div>
-            <div id="mobile-menu" class="hidden md:hidden mt-4">
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
                 <a href="#competencies" class="block py-2 text-gray-600 hover:text-blue-500">Competencies</a>
                 <a href="#experience" class="block py-2 text-gray-600 hover:text-blue-500">Experience</a>
                 <a href="#achievements" class="block py-2 text-gray-600 hover:text-blue-500">Achievements</a>
                 <a href="#education" class="block py-2 text-gray-600 hover:text-blue-500">Education</a>
+                <div class="flex gap-3 pt-2">
+                    <button id="themeToggleMobile" class="text-xs px-3 py-1 border rounded-md">Theme</button>
+                    <button id="printResumeMobile" class="text-xs px-3 py-1 border rounded-md">Print</button>
+                </div>
             </div>
         </div>
     </nav>
-
-    <main>
-        <section id="hero" class="py-20 md:py-32">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">Eric Dao</h1>
-                <p class="text-xl md:text-2xl text-blue-600 mt-2">Engineering Leader / IT Director</p>
-                <div class="mt-6 text-gray-600 max-w-3xl mx-auto text-lg">
-                    <p>Seasoned and dynamic IT leader with a proven history of exceeding company goals through strategic vision and organized practices. Highly adept at operating under pressure and adapting to complex challenges to drive organizational growth and innovation.</p>
+    <!-- HERO -->
+    <section id="hero" class="py-20 md:py-28">
+        <div class="container mx-auto px-6 text-center max-w-5xl">
+            <h1 class="pro-heading text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
+                Eric Dao
+            </h1>
+            <p class="mt-3 text-xl md:text-2xl font-medium accent-gradient-text">Engineering & Technology Executive | Platform, Product & Transformation</p>
+            <div class="mt-6 text-gray-600 dark:text-text-soft max-w-4xl mx-auto text-lg leading-relaxed">
+                <p>
+                    Enterprise-scale engineering leader with a record of architecting resilient platforms, scaling global multi‑disciplinary teams, and converting strategy into sustained revenue, efficiency, quality, and innovation outcomes. Blends product intuition, operational rigor, and modernization mindset (AI, data, cloud, automation) to accelerate roadmap velocity while reducing complexity and risk.
+                </p>
+            </div>
+            <div class="mt-8 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-gray-500 dark:text-text-soft text-sm">
+                <span>Kowloon, Hong Kong</span>
+                <span>&bull;</span>
+                <a href="mailto:ericdaoinus@gmail.com" class="hover:text-blue-500">ericdaoinus@gmail.com</a>
+                <span>&bull;</span>
+                <a href="https://www.linkedin.com/in/ericgcdao/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-500">LinkedIn</a>
+            </div>
+            <!-- KPI Snapshot -->
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-left">
+                <div class="kpi-tile">
+                    <span class="text-xs tracking-wide uppercase text-gray-500">Org Scale Led</span>
+                    <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">55+</span>
+                    <span class="text-xs text-gray-500">Cross-discipline</span>
                 </div>
-                 <div class="mt-8 flex justify-center items-center space-x-6 text-gray-500">
-                    <span>Kowloon, Hong Kong</span>
-                    <span>&bull;</span>
-                    <a href="mailto:ericdaoinus@gmail.com" class="hover:text-blue-500">ericdaoinus@gmail.com</a>
-                    <span>&bull;</span>
-                    <a href="https://www.linkedin.com/in/ericgcdao/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-500">LinkedIn</a>
+                <div class="kpi-tile">
+                    <span class="text-xs tracking-wide uppercase text-gray-500">Availability</span>
+                    <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">99.999%</span>
+                    <span class="text-xs text-gray-500">Critical platforms</span>
+                </div>
+                <div class="kpi-tile">
+                    <span class="text-xs tracking-wide uppercase text-gray-500">Cost Efficiency</span>
+                    <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">30%</span>
+                    <span class="text-xs text-gray-500">Run-rate reduced</span>
+                </div>
+                <div class="kpi-tile">
+                    <span class="text-xs tracking-wide uppercase text-gray-500">Innovation</span>
+                    <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">10 + 1</span>
+                    <span class="text-xs text-gray-500">Patents (1 pending)</span>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
+    <main>
         <section id="competencies" class="py-16 bg-white">
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl font-bold text-center mb-4">Core Competencies</h2>
@@ -131,10 +317,10 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl font-bold text-center mb-4">Career Journey</h2>
                 <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Explore my professional history through this interactive timeline. Each point represents a significant role in my career. Click on any position to view detailed responsibilities and key accomplishments from that period. The most recent role is selected by default.</p>
-                <div class="flex flex-col md:flex-row gap-8 md:h-[90vh] md:max-h-[800px] md:overflow-hidden">
-                    <div class="w-full md:w-1/3 relative timeline-buttons-container">
+                <div class="flex flex-col md:flex-row gap-8 md:h-[90vh] md:max-h-[800px] md:overflow-hidden no-print">
+                    <div class="w-full md:w-1/3 relative timeline-buttons-container h-full">
                         <div class="border-l-2 border-blue-200 absolute h-full left-4"></div>
-                        <div id="timeline-buttons" class="space-y-8"></div>
+                        <div id="timeline-buttons" class="space-y-8 pb-24"></div>
                         <div class="scroll-hint"></div>
                     </div>
                     <div class="w-full md:w-2/3 bg-white p-8 rounded-xl shadow-lg overflow-y-auto">
@@ -409,7 +595,10 @@
             const timelineButtonsContainer = document.querySelector('.timeline-buttons-container');
             const experienceDetailsContainer = document.getElementById('experience-details');
 
+            let currentExperienceId = 'price'; // track selection
+
             function displayExperience(id) {
+                currentExperienceId = id; // added
                 const experience = experienceData.find(e => e.id === id);
                 if (!experience) return;
                 let detailsHtml = experience.details.map(d => `<li class="mb-2">${d}</li>`).join('');
@@ -462,70 +651,75 @@
             }
             
             displayExperience('price');
+            // Replace original Chart initializations with try/catch for resilience
             const competenciesData = {
                 labels: ['Strategic Leadership', 'Team & Collaborative Leadership', 'End-to-End Product Management', 'Innovative Problem-Solving', 'Data-Driven Decision Making'],
                 datasets: [{
                     label: 'Proficiency',
                     data: [95, 98, 90, 88, 85],
-                    backgroundColor: 'rgba(66, 153, 225, 0.6)',
-                    borderColor: 'rgba(66, 153, 225, 1)',
+                    backgroundColor: 'rgba(66,153,225,0.6)',
+                    borderColor: 'rgba(66,153,225,1)',
                     borderWidth: 1
                 }]
             };
-            new Chart(document.getElementById('competenciesChart'), {
-                type: 'bar',
-                data: competenciesData,
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: (context) => `${context.label}: ${context.raw}%`
+            try {
+                const compCtx = document.getElementById('competenciesChart');
+                if (compCtx && window.Chart) {
+                    new Chart(compCtx, {
+                        type: 'bar',
+                        data: competenciesData,
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: (context) => `${context.label}: ${context.raw}%`
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: { callback: (value) => value + '%' }
+                                }
                             }
                         }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            max: 100,
-                             ticks: {
-                                callback: (value) => value + '%'
-                            }
-                        }
-                    }
+                    });
                 }
-            });
+            } catch(e) { console.warn('Competencies chart init failed', e); }
+
             const patentsData = {
                 labels: ['Filed', 'Pending'],
                 datasets: [{
                     data: [10, 1],
-                    backgroundColor: ['rgba(66, 153, 225, 0.7)', 'rgba(237, 137, 54, 0.7)'],
+                    backgroundColor: ['rgba(66,153,225,0.7)','rgba(237,137,54,0.7)'],
                     borderColor: ['#FFFFFF'],
                     borderWidth: 2,
                     hoverOffset: 4
                 }]
             };
-            new Chart(document.getElementById('patentsChart'), {
-                type: 'doughnut',
-                data: patentsData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: (context) => ` ${context.label}: ${context.raw}`
+            try {
+                const patCtx = document.getElementById('patentsChart');
+                if (patCtx && window.Chart) {
+                    new Chart(patCtx, {
+                        type: 'doughnut',
+                        data: patentsData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'bottom' },
+                                tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.raw}` } }
                             }
                         }
-                    }
+                    });
                 }
-            });
+            } catch(e) { console.warn('Patents chart init failed', e); }
+
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenuButton.addEventListener('click', () => {
@@ -536,6 +730,104 @@
                     mobileMenu.classList.add('hidden');
                 });
             });
+            // THEME & UTILITIES
+            const root = document.documentElement;
+            const toggleButtons = [document.getElementById('themeToggle'), document.getElementById('themeToggleMobile')].filter(Boolean);
+            const storedTheme = localStorage.getItem('pref-theme');
+            if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                root.classList.add('dark');
+            }
+            toggleButtons.forEach(btn => btn.addEventListener('click', () => {
+                root.classList.toggle('dark');
+                localStorage.setItem('pref-theme', root.classList.contains('dark') ? 'dark' : 'light');
+            }));
+            // BUILD FULL EXPERIENCE LIST FOR PRINT (unchanged logic, ensure callable)
+            function buildAllExperiencesHtml() {
+                return experienceData.map(exp => {
+                    const details = exp.details.length
+                        ? `<h4 class="font-semibold mt-2">Responsibilities:</h4>
+                           <ul>${exp.details.map(d => `<li>${d}</li>`).join('')}</ul>`
+                        : '';
+                    const highlights = exp.highlights.length
+                        ? `<h4 class="font-semibold mt-2">Key Highlights:</h4>
+                           <ul>${exp.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`
+                        : '';
+                    return `<article class="experience-print-block">
+                        <p class="text-xs text-gray-500">${exp.date}</p>
+                        <h3 class="font-bold">${exp.title}</h3>
+                        <p class="text-blue-600 font-medium">${exp.company}</p>
+                        <p class="italic text-gray-500 mb-1">${exp.companyType}</p>
+                        ${details}${highlights}
+                    </article>`;
+                }).join('');
+            }
+
+            let printAllContainer = null;
+
+            function preparePrint() {
+                if (!printAllContainer) {
+                    const experienceSection = document.getElementById('experience').querySelector('.container');
+                    printAllContainer = document.createElement('div');
+                    printAllContainer.id = 'experience-print-all';
+                    printAllContainer.className = 'print-only mt-6 text-sm';
+                    experienceSection.appendChild(printAllContainer);
+                }
+                printAllContainer.innerHTML = buildAllExperiencesHtml();
+            }
+            function restoreAfterPrint() {
+                if (printAllContainer && printAllContainer.parentNode) {
+                    printAllContainer.parentNode.removeChild(printAllContainer);
+                    printAllContainer = null;
+                }
+                displayExperience(currentExperienceId);
+            }
+            window.addEventListener('beforeprint', preparePrint);
+            window.addEventListener('afterprint', restoreAfterPrint);
+
+            function safePrint() {
+                try { preparePrint(); } catch(e){ console.warn('preparePrint failed', e); }
+                requestAnimationFrame(() => window.print());
+            }
+
+            // Update print button wiring (keep existing code, just ensure safePrint used)
+            [document.getElementById('printResume'), document.getElementById('printResumeMobile')].filter(Boolean)
+                .forEach(btn => {
+                    btn.replaceWith(btn.cloneNode(true));
+                });
+            [document.getElementById('printResume'), document.getElementById('printResumeMobile')].filter(Boolean)
+                .forEach(btn => btn.addEventListener('click', safePrint));
+
+            // ACTIVE NAV HIGHLIGHT + Chart defaults (unchanged)
+            const sections = ['hero','competencies','experience','achievements','education'].map(id => document.getElementById(id));
+            const navLinks = Array.from(document.querySelectorAll('nav a[href^="#"]'));
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        navLinks.forEach(l => l.removeAttribute('aria-current'));
+                        const active = navLinks.find(l => l.getAttribute('href') === '#' + entry.target.id);
+                        if(active) active.setAttribute('aria-current','true');
+                    }
+                });
+            }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+            sections.forEach(s => io.observe(s));
+
+            // Improve chart fonts to align with theme
+            if (window.Chart) {
+                Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+                Chart.defaults.color = getComputedStyle(document.body).getPropertyValue('--text-soft') || '#4a5568';
+            }
+            // (Optional) Re-run scrollable check after rendering to keep scroll-hint logic intact
+            function markScrollable(){
+                if(!timelineButtonsContainer) return;
+                if (timelineButtonsContainer.scrollHeight > timelineButtonsContainer.clientHeight) {
+                    timelineButtonsContainer.classList.add('is-scrollable');
+                } else {
+                    timelineButtonsContainer.classList.remove('is-scrollable');
+                }
+            }
+            // After experience buttons added (displayExperience already called earlier in existing code)
+            setTimeout(markScrollable, 0);
+            window.addEventListener('resize', markScrollable);
         });
     </script>
 </body>
