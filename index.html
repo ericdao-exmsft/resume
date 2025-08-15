@@ -227,7 +227,10 @@
       "jobTitle":"Engineering Leader / IT Director",
       "email":"mailto:ericdaoinus@gmail.com",
       "url":"https://www.linkedin.com/in/ericgcdao/",
-      "address":{"@type":"PostalAddress","addressLocality":"Kowloon","addressCountry":"HK"},
+      "address":[
+        {"@type":"PostalAddress","addressLocality":"Kowloon","addressCountry":"HK"},
+        {"@type":"PostalAddress","addressLocality":"Seattle","addressRegion":"WA","addressCountry":"US"}
+      ],
       "knowsAbout":[
         "Strategic Technology Leadership","Cloud Platforms","High Availability Architecture",
         "Product Engineering Management","Data-Driven Transformation","AI / ML Adoption",
@@ -239,7 +242,40 @@
       ]
     }
     </script>
-    <!-- ...existing code... -->
+    <!-- Open Graph -->
+    <meta property="og:title" content="Eric Dao - Engineering Leader | IT Director">
+    <meta property="og:description" content="Engineering & Technology Executive with a record of architecting resilient platforms, scaling global teams, and delivering measurable impact across product, platform and transformation initiatives.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ericdao-exmsft.github.io/resume">
+    <meta property="og:image" content="https://ericdao-exmsft.github.io/resume/ed-favicon.png"><!-- TODO: use a 1200x630 image; temporary fallback: ed-favicon.png -->
+    <meta property="og:image:alt" content="Eric Dao - Professional Resume">
+    <meta property="og:site_name" content="Eric Dao">
+    <meta property="og:locale" content="en_US">
+    <!-- Enhancements for broader compatibility -->
+    <meta property="og:image:secure_url" content="https://ericdao-exmsft.github.io/resume/ed-favicon.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <!-- Optional: square fallback (uses favicon); will be secondary and rarely chosen -->
+    <!-- Replace YOUR_PUBLIC_URL with your domain. If using favicon only, set width/height to 288 and use this as the sole og:image. -->
+    <meta property="og:image" content="https://ericdao-exmsft.github.io/resume/ed-favicon.png">
+    <meta property="og:image:width" content="288">
+    <meta property="og:image:height" content="288">
+    <meta property="og:image:type" content="image/png">
+    <!-- Facebook App ID (optional, enables Insights/debugging features) -->
+    <meta property="fb:app_id" content=""><!-- TODO: add if you have one -->
+    <!-- Browser/UI theme color (some clients respect this) -->
+    <meta name="theme-color" content="#1d4ed8">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Eric Dao - Engineering Leader | IT Director">
+    <meta name="twitter:description" content="Engineering & Technology Executive with a record of architecting resilient platforms, scaling global teams, and delivering measurable impact.">
+    <meta name="twitter:image" content="https://ericdao-exmsft.github.io/resume/ed-favicon.png"><!-- same as og:image -->
+    <!-- <meta name="twitter:site" content="@your_handle"> --> <!-- optional -->
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://ericdao-exmsft.github.io/resume">
 </head>
 <body class="antialiased">
 
@@ -286,7 +322,9 @@
                 </p>
             </div>
             <div class="mt-8 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-gray-500 dark:text-text-soft text-sm">
-                <span>Kowloon, Hong Kong</span>
+                <a href="https://www.google.com/maps/search/?api=1&query=Kowloon%2C%20Hong%20Kong" target="_blank" rel="noopener noreferrer" class="hover:text-blue-500">Kowloon, Hong Kong</a>
+                <span>&bull;</span>
+                <a href="https://www.google.com/maps/search/?api=1&query=Seattle%2C%20Washington%2C%20USA" target="_blank" rel="noopener noreferrer" class="hover:text-blue-500">Seattle, Washington, USA</a>
                 <span>&bull;</span>
                 <a href="mailto:ericdaoinus@gmail.com" class="hover:text-blue-500">ericdaoinus@gmail.com</a>
                 <span>&bull;</span>
@@ -899,3 +937,4 @@
     </script>
 </body>
 </html>
+``` 
