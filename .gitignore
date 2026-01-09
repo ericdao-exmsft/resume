@@ -175,4 +175,5 @@ dist
 .svelte-kit
 
 # local development files
-backup/
+/backup/
+/cursor/
