@@ -52,6 +52,10 @@
         .dark .text-gray-700 { color: var(--text) !important; }
         .dark .text-gray-600 { color: var(--text-soft) !important; }
         .dark .text-gray-500 { color: #9aa5b1 !important; }
+        /* Nav background for dark mode */
+        .dark nav { background-color: rgba(36, 49, 66, 0.95) !important; }
+        /* Ensure nav name link is white in dark mode */
+        .dark nav a[href="#hero"] { color: #ffffff !important; }
         .dark .timeline-button[aria-selected="true"] {
             background: var(--accent-soft);
             border-color: var(--accent);
@@ -208,15 +212,6 @@
         /* Dark mode chart inversion helper */
         .dark canvas { filter: brightness(1.05) contrast(1.05); }
 
-        /* Dark mode nav visibility fixes */
-        .dark nav { background: rgba(36,49,66,0.92) !important; border-bottom: 1px solid var(--border); }
-        .dark nav a { color: var(--text-soft) !important; transition: color .25s; }
-        .dark nav a:hover,
-        .dark nav a[aria-current="true"] { color: var(--accent) !important; }
-        .dark nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-        /* Mobile menu inherits */
-        .dark #mobile-menu a { color: var(--text-soft) !important; }
-        .dark #mobile-menu a:hover { color: var(--accent) !important; }
     </style>
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -279,34 +274,38 @@
 </head>
 <body class="antialiased">
 
-    <nav class="bg-white/80 dark:bg-[#0f172acc] backdrop-blur-md sticky top-0 z-50 shadow-sm supports-backdrop-blur">
-        <div class="container mx-auto px-6 py-3">
-            <div class="flex justify-between items-center">
-                <a href="#hero" class="text-xl font-bold text-gray-800">Eric Dao</a>
-                <div class="hidden md:flex space-x-6 items-center">
-                    <a href="#competencies" class="text-gray-600 hover:text-blue-500 transition-colors">Competencies</a>
-                    <a href="#experience" class="text-gray-600 hover:text-blue-500 transition-colors">Experience</a>
-                    <a href="#achievements" class="text-gray-600 hover:text-blue-500 transition-colors">Highlights</a>
-                    <a href="#global-leadership" class="text-gray-600 hover:text-blue-500 transition-colors">Global Leadership</a>
-                    <a href="#education" class="text-gray-600 hover:text-blue-500 transition-colors">Education</a>
-                    <button id="themeToggle" class="dark-toggle text-sm px-3 py-1.5 rounded-md border border-transparent hover:border-blue-400 transition-colors" aria-label="Toggle dark mode">🌓</button>
-                    <button id="printResume" class="print-btn text-sm px-3 py-1.5 rounded-md border border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" aria-label="Print / Save PDF">Print</button>
+    <nav class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700 supports-backdrop-blur">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center h-16">
+                <a href="#hero" class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">ERIC DAO</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#competencies" class="nav-link text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Competencies</a>
+                    <a href="#global-leadership" class="nav-link text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Global Leadership</a>
+                    <a href="#achievements" class="nav-link text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Highlights</a>
+                    <a href="#experience" class="nav-link text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Experience</a>
+                    <a href="#education" class="nav-link text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Education</a>
+                    <div class="flex items-center gap-3 ml-2 pl-4 border-l border-gray-200 dark:border-gray-700">
+                        <button id="themeToggle" class="dark-toggle text-sm px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle dark mode">🌓</button>
+                        <button id="printResume" class="print-btn text-sm px-3 py-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors font-medium" aria-label="Print / Save PDF">Print</button>
+                    </div>
                 </div>
                 <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-gray-600 focus:outline-none">
+                    <button id="mobile-menu-button" class="text-gray-700 dark:text-gray-300 focus:outline-none p-2 -mr-2">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                     </button>
                 </div>
             </div>
-            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
-                <a href="#competencies" class="block py-2 text-gray-600 hover:text-blue-500">Competencies</a>
-                <a href="#experience" class="block py-2 text-gray-600 hover:text-blue-500">Experience</a>
-                <a href="#achievements" class="block py-2 text-gray-600 hover:text-blue-500">Highlights</a>
-                <a href="#global-leadership" class="block py-2 text-gray-600 hover:text-blue-500">Global Leadership</a>
-                <a href="#education" class="block py-2 text-gray-600 hover:text-blue-500">Education</a>
-                <div class="flex gap-3 pt-2">
-                    <button id="themeToggleMobile" class="text-xs px-3 py-1 border rounded-md">Theme</button>
-                    <button id="printResumeMobile" class="text-xs px-3 py-1 border rounded-md">Print</button>
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200 dark:border-gray-700">
+                <div class="space-y-1">
+                    <a href="#competencies" class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded-md">Competencies</a>
+                    <a href="#global-leadership" class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded-md">Global Leadership</a>
+                    <a href="#achievements" class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded-md">Highlights</a>
+                    <a href="#experience" class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded-md">Experience</a>
+                    <a href="#education" class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded-md">Education</a>
+                </div>
+                <div class="flex gap-3 px-4 pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+                    <button id="themeToggleMobile" class="flex-1 text-sm px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Theme</button>
+                    <button id="printResumeMobile" class="flex-1 text-sm px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors font-medium">Print</button>
                 </div>
             </div>
         </div>
@@ -403,20 +402,24 @@
             </div>
         </section>
 
-        <section id="experience" class="py-16">
+        <section id="global-leadership" class="py-16">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">Career Journey</h2>
-                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Explore my professional history through this interactive timeline. Each point represents a significant role in my career. Click on any position to view detailed responsibilities and key accomplishments from that period. The most recent role is selected by default.</p>
-                <div class="flex flex-col md:flex-row gap-8 md:h-[90vh] md:max-h-[800px] md:overflow-hidden no-print">
-                    <div class="w-full md:w-1/3 relative timeline-buttons-container h-full">
-                        <div class="border-l-2 border-blue-200 absolute h-full left-4"></div>
-                        <div id="timeline-buttons" class="space-y-8 pb-24"></div>
-                        <div class="scroll-hint"></div>
-                    </div>
-                    <div class="w-full md:w-2/3 bg-white p-8 rounded-xl shadow-lg overflow-y-auto">
-                        <div id="experience-details">
-                        </div>
-                    </div>
+                <h2 class="text-3xl font-bold text-center mb-4">Global & Multilingual Leadership</h2>
+                <div class="max-w-4xl mx-auto">
+                    <ul class="space-y-3 text-gray-700 dark:text-text-soft">
+                        <li class="flex items-start">
+                            <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                            <span>Languages: fluent English (written/spoken); fluent Chinese (Mandarin & Cantonese); working Vietnamese.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                            <span>Cross-region leadership: 12 years in the U.S. (Microsoft, Redmond/Seattle), 10 years in Beijing (China startups + founding experience), and 6 years in Hong Kong.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                            <span>Proven ability to operate effectively in both English-speaking and China environments—well-suited for companies with dual-market (China + global) business and stakeholders.</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -520,25 +523,20 @@
             </div>
         </section>
 
-        <!-- Add print-page-break class -->
-        <section id="global-leadership" class="py-16 print-page-break">
+        <section id="experience" class="py-16">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">Global & Multilingual Leadership</h2>
-                <div class="max-w-4xl mx-auto">
-                    <ul class="space-y-3 text-gray-700 dark:text-text-soft">
-                        <li class="flex items-start">
-                            <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
-                            <span>Languages: fluent English (written/spoken); fluent Chinese (Mandarin & Cantonese); working Vietnamese.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
-                            <span>Cross-region leadership: 12 years in the U.S. (Microsoft, Redmond/Seattle), 10 years in Beijing (China startups + founding experience), and 6 years in Hong Kong.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
-                            <span>Proven ability to operate effectively in both English-speaking and China environments—well-suited for companies with dual-market (China + global) business and stakeholders.</span>
-                        </li>
-                    </ul>
+                <h2 class="text-3xl font-bold text-center mb-4">Career Journey</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Explore my professional history through this interactive timeline. Each point represents a significant role in my career. Click on any position to view detailed responsibilities and key accomplishments from that period. The most recent role is selected by default.</p>
+                <div class="flex flex-col md:flex-row gap-8 md:h-[90vh] md:max-h-[800px] md:overflow-hidden no-print">
+                    <div class="w-full md:w-1/3 relative timeline-buttons-container h-full">
+                        <div class="border-l-2 border-blue-200 absolute h-full left-4"></div>
+                        <div id="timeline-buttons" class="space-y-8 pb-24"></div>
+                        <div class="scroll-hint"></div>
+                    </div>
+                    <div class="w-full md:w-2/3 bg-white p-8 rounded-xl shadow-lg overflow-y-auto">
+                        <div id="experience-details">
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -755,67 +753,19 @@
                 root.classList.toggle('dark');
                 localStorage.setItem('pref-theme', root.classList.contains('dark') ? 'dark' : 'light');
             }));
-            // BUILD FULL EXPERIENCE LIST FOR PRINT (unchanged logic, ensure callable)
-            function buildAllExperiencesHtml() {
-                return experienceData.map(exp => {
-                    const details = exp.details.length
-                        ? `<h4 class="font-semibold mt-2">Responsibilities:</h4>
-                           <ul>${exp.details.map(d => `<li>${d}</li>`).join('')}</ul>`
-                        : '';
-                    const highlights = exp.highlights.length
-                        ? `<h4 class="font-semibold mt-2">Key Highlights:</h4>
-                           <ul>${exp.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`
-                        : '';
-                    return `<article class="experience-print-block">
-                        <p class="text-xs text-gray-500">${exp.date}</p>
-                        <h3 class="font-bold">${exp.title}</h3>
-                        <p class="text-blue-600 font-medium">${exp.company}</p>
-                        <p class="italic text-gray-500 mb-1">${exp.companyType}</p>
-                        ${details}${highlights}
-                    </article>`;
-                }).join('');
+            // Download/Print PDF functionality
+            function downloadPDF() {
+                const pdfPath = 'doc/EricDao-Resume-Jan-2026.pdf';
+                // Open PDF in new window/tab so user can print or download
+                window.open(pdfPath, '_blank');
             }
-
-            let printAllContainer = null;
-
-            function preparePrint() {
-                if (!printAllContainer) {
-                    const experienceSection = document.getElementById('experience').querySelector('.container');
-                    printAllContainer = document.createElement('div');
-                    printAllContainer.id = 'experience-print-all';
-                    printAllContainer.className = 'print-only mt-6 text-sm';
-                    experienceSection.appendChild(printAllContainer);
-                }
-                printAllContainer.innerHTML = buildAllExperiencesHtml();
-            }
-
-            function restoreAfterPrint() {
-                if (printAllContainer && printAllContainer.parentNode) {
-                    printAllContainer.parentNode.removeChild(printAllContainer);
-                    printAllContainer = null;
-                }
-                displayExperience(currentExperienceId);
-            }
-
-            // Update existing listeners to use enhanced prepare/restore
-            window.addEventListener('beforeprint', preparePrint);
-            window.addEventListener('afterprint', restoreAfterPrint);
-
-            // Ensure button print path also goes through updated prepare
-            function safePrint() {
-                try { preparePrint(); } catch(e){ console.warn('preparePrint failed', e); }
-                requestAnimationFrame(() => window.print());
-            }
-            // Update print button wiring (keep existing code, just ensure safePrint used)
+            
+            // Wire up print buttons to download PDF
             [document.getElementById('printResume'), document.getElementById('printResumeMobile')].filter(Boolean)
-                .forEach(btn => {
-                    btn.replaceWith(btn.cloneNode(true));
-                });
-            [document.getElementById('printResume'), document.getElementById('printResumeMobile')].filter(Boolean)
-                .forEach(btn => btn.addEventListener('click', safePrint));
+                .forEach(btn => btn.addEventListener('click', downloadPDF));
 
             // ACTIVE NAV HIGHLIGHT
-            const sections = ['hero','competencies','experience','achievements','global-leadership','education'].map(id => document.getElementById(id)).filter(Boolean);
+            const sections = ['hero','competencies','global-leadership','achievements','experience','education'].map(id => document.getElementById(id)).filter(Boolean);
             const navLinks = Array.from(document.querySelectorAll('nav a[href^="#"]'));
             const io = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
