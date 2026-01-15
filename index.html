@@ -16,34 +16,34 @@
     <!-- Design Tokens -->
     <style>
         :root {
-            --bg: #F8F7F1;
+            --bg: #fafafa;
             --bg-alt: #ffffff;
-            --bg-soft: #f1efe6;
-            --text: #2d3748;
-            --text-soft: #4a5568;
-            --border: #e2e8f0;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --accent-soft: #e6f1fe;
-            --radius-sm: 4px;
-            --radius-md: 10px;
-            --radius-lg: 18px;
-            --shadow-xs: 0 1px 2px rgba(0,0,0,0.06);
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-            --shadow-md: 0 6px 18px -4px rgba(0,0,0,0.12);
-            --grad-accent: linear-gradient(90deg,#1d4ed8 0%, #3b82f6 60%, #60a5fa 100%);
+            --bg-soft: #f5f5f5;
+            --text: #1a1a1a;
+            --text-soft: #4a4a4a;
+            --border: #e5e5e5;
+            --accent: #1e40af;
+            --accent-hover: #1e3a8a;
+            --accent-soft: #eff6ff;
+            --radius-sm: 2px;
+            --radius-md: 4px;
+            --radius-lg: 6px;
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --grad-accent: linear-gradient(90deg,#1e40af 0%, #3b82f6 100%);
         }
         .dark {
-            --bg: #1b2431;              /* was #0f172a */
-            --bg-alt: #243142;          /* was #111c33 */
-            --bg-soft: #2d3b4e;         /* was #1e293b */
-            --text: #f5f7fa;            /* slightly warmer for readability */
-            --text-soft: #d1d8e2;       /* higher contrast than previous */
-            --border: #38495c;
-            --accent: #4ea6ff;          /* slightly lighter accent for AA on dark */
-            --accent-hover: #74baff;
-            --accent-soft: #1f3a52;     /* selection / active background */
-            --shadow-md: 0 8px 22px -6px rgba(0,0,0,0.55);
+            --bg: #0f1117;
+            --bg-alt: #1a1d29;
+            --bg-soft: #242632;
+            --text: #e4e4e7;
+            --text-soft: #a1a1aa;
+            --border: #27272a;
+            --accent: #60a5fa;
+            --accent-hover: #93c5fd;
+            --accent-soft: #1e3a5f;
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
         }
         /* Harmonize legacy utility classes in dark mode for consistent readability */
         .dark .bg-white { background-color: var(--bg-alt) !important; }
@@ -53,7 +53,7 @@
         .dark .text-gray-600 { color: var(--text-soft) !important; }
         .dark .text-gray-500 { color: #9aa5b1 !important; }
         /* Nav background for dark mode */
-        .dark nav { background-color: rgba(36, 49, 66, 0.95) !important; }
+        .dark nav { background-color: rgba(26, 29, 41, 0.98) !important; border-bottom-color: rgba(39, 39, 42, 0.8) !important; }
         /* Ensure nav name link is white in dark mode */
         .dark nav a[href="#hero"] { color: #ffffff !important; }
         .dark .timeline-button[aria-selected="true"] {
@@ -78,13 +78,20 @@
         }
         .e-surface {
             background: var(--bg-alt);
-            border: 1px solid var(--border);
+            border: none;
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            transition: background .4s, border-color .4s, box-shadow .3s;
+            box-shadow: none;
+            transition: background .3s ease, transform .2s ease;
         }
         .e-surface:hover {
-            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        /* Section divider - subtle and elegant */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 4rem 0;
         }
         .pro-heading {
             letter-spacing: -0.02em;
@@ -113,14 +120,15 @@
             width:100%;
         }
         .timeline-button {
-            position:relative;
-            background: var(--bg-alt);
-            border:1px solid var(--border);
+            position: relative;
+            background: transparent;
+            border: none;
+            border-left: 3px solid transparent;
         }
         .timeline-button[aria-selected="true"] {
-            background: var(--accent-soft);
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px var(--accent-soft), 0 0 0 4px var(--accent);
+            background: transparent;
+            border-left-color: var(--accent);
+            padding-left: 1rem;
         }
         .timeline-button:focus-visible {
             outline:2px solid var(--accent);
@@ -138,19 +146,20 @@
         }
         /* KPI snapshot grid */
         .kpi-tile {
-            background: var(--bg-alt);
-            border:1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding:1rem 1.1rem;
-            display:flex;
-            flex-direction:column;
-            gap:.15rem;
-            box-shadow: var(--shadow-xs);
-            transition: transform .35s;
+            background: transparent;
+            border: none;
+            border-left: 2px solid var(--accent);
+            border-radius: 0;
+            padding: 1rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            box-shadow: none;
+            transition: all 0.3s ease;
         }
         .kpi-tile:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
+            border-left-color: var(--accent-hover);
+            padding-left: 2rem;
         }
         /* Career Journey sidebar scroll fix */
         .timeline-buttons-container {
@@ -274,7 +283,7 @@
 </head>
 <body class="antialiased">
 
-    <nav class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700 supports-backdrop-blur">
+    <nav class="bg-white/98 dark:bg-[#1a1d29]/98 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-100 dark:border-gray-800 supports-backdrop-blur">
         <div class="container mx-auto px-6">
             <div class="flex justify-between items-center h-16">
                 <a href="#hero" class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">ERIC DAO</a>
@@ -310,8 +319,8 @@
             </div>
         </div>
     </nav>
-    <!-- HERO -->
-    <section id="hero" class="py-20 md:py-28">
+            <!-- HERO -->
+    <section id="hero" class="py-24 md:py-32">
         <div class="container mx-auto px-6 text-center max-w-5xl">
             <h1 class="pro-heading text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
                 ERIC DAO
@@ -363,10 +372,10 @@
     </section>
 
     <main>
-        <section id="competencies" class="py-16 bg-white">
+        <section id="competencies" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">CTO Competencies</h2>
-                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">This section outlines my primary areas of expertise, showcasing the skills I've honed throughout my career.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-3 tracking-tight">CTO Competencies</h2>
+                <p class="text-center text-gray-500 dark:text-text-soft max-w-2xl mx-auto mb-16 text-sm uppercase tracking-wide">Core Areas of Expertise</p>
                 <div class="max-w-4xl mx-auto">
                     <ul class="space-y-3 text-gray-700 dark:text-text-soft">
                         <li class="flex items-start">
@@ -402,9 +411,11 @@
             </div>
         </section>
 
-        <section id="global-leadership" class="py-16">
+        <div class="section-divider"></div>
+        <section id="global-leadership" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">Global & Multilingual Leadership</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-3 tracking-tight">Global & Multilingual Leadership</h2>
+                <p class="text-center text-gray-500 dark:text-text-soft max-w-2xl mx-auto mb-16 text-sm uppercase tracking-wide">Cross-Cultural Executive Leadership</p>
                 <div class="max-w-4xl mx-auto">
                     <ul class="space-y-3 text-gray-700 dark:text-text-soft">
                         <li class="flex items-start">
@@ -424,97 +435,98 @@
             </div>
         </section>
 
+        <div class="section-divider"></div>
         <!-- Add print-page-break class -->
-        <section id="achievements" class="py-16 bg-white print-page-break">
+        <section id="achievements" class="py-20 print-page-break">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">Career Highlights</h2>
-                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">This section highlights some of my most significant career accomplishments across business impact, digital transformation, scale, reliability, security, team leadership, and innovation.</p>
-                <div class="max-w-5xl mx-auto space-y-8">
-                    <div class="e-surface p-6">
-                        <h3 class="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400">Business & Financial Impact</h3>
-                        <ul class="space-y-2 text-gray-700 dark:text-text-soft">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-3 tracking-tight">Career Highlights</h2>
+                <p class="text-center text-gray-500 dark:text-text-soft max-w-2xl mx-auto mb-16 text-sm uppercase tracking-wide">Key Achievements & Impact</p>
+                <div class="max-w-5xl mx-auto space-y-12">
+                    <div class="e-surface p-8 border-l-4 border-blue-600 dark:border-blue-400">
+                        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-white tracking-tight">Business & Financial Impact</h3>
+                        <ul class="space-y-3 text-gray-700 dark:text-text-soft leading-relaxed">
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Improved order volume 25%+ by cutting purchase-flow friction 50% (1-click Buy Now redesign).</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Reduced run-rate costs ~30% via cloud adoption + workload-right architecture (incl. 8x storage cost reduction and serverless for transient workloads).</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Launched cloud video storage subscriptions (China + North America), increasing revenue 300%+; reduced cost of goods/services 25%; improved profit 30% via recurring revenue mix shift.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Expanded Xiaomi-ecosystem home camera portfolio 3x within 1.5 years; doubled revenue and increased revenue per head 35%.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Security program reduced external audit costs ~20% annually and strengthened customer trust/brand value.</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="e-surface p-6">
-                        <h3 class="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400">Digital Transformation & Delivery Efficiency</h3>
-                        <ul class="space-y-2 text-gray-700 dark:text-text-soft">
+                    <div class="e-surface p-8 border-l-4 border-blue-600 dark:border-blue-400">
+                        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-white tracking-tight">Digital Transformation & Delivery Efficiency</h3>
+                        <ul class="space-y-3 text-gray-700 dark:text-text-soft leading-relaxed">
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Re-architected platforms into layered MVP modules: reduced code complexity 50% (KLOC -50%) and improved quality 60% through testability and predictable failure modes.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Increased deployment throughput 8x (from 1 deployment/day to up to 8/day) with GitLab CI/CD + Kubernetes tooling + image management discipline.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Automation reduced time-to-release cycle 80% and lowered QA staff cost ~50% while increasing release confidence and consistency.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Recognized for digital transformation impact: Standard Chartered Digital Transformation Corporate — Outstanding Award (2023, 2024).</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="e-surface p-6">
-                        <h3 class="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400">Scale, Reliability & Security</h3>
-                        <ul class="space-y-2 text-gray-700 dark:text-text-soft">
+                    <div class="e-surface p-8 border-l-4 border-blue-600 dark:border-blue-400">
+                        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-white tracking-tight">Scale, Reliability & Security</h3>
+                        <ul class="space-y-3 text-gray-700 dark:text-text-soft leading-relaxed">
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Operated high-scale marketplace platforms (daily): ~50M requests, ~2 TB served, ~1.5M visits; 100K+ IM messages processed/day.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Sustained 99.995% availability with zero security incidents through SAST/DAST discipline, WAF protections, secrets management, and encryption at rest for PII.</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="e-surface p-6">
-                        <h3 class="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400">Team & Global Leadership</h3>
-                        <ul class="space-y-2 text-gray-700 dark:text-text-soft">
+                    <div class="e-surface p-8 border-l-4 border-blue-600 dark:border-blue-400">
+                        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-white tracking-tight">Team & Global Leadership</h3>
+                        <ul class="space-y-3 text-gray-700 dark:text-text-soft leading-relaxed">
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Recruited and retained top talent with <5% attrition over three years; led distributed Hong Kong + remote China engineering teams.</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Led 55+ cross-discipline engineering/product organizations; incubated and scaled engineering in China (5 → 42) at Microsoft.</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="e-surface p-6">
-                        <h3 class="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400">Innovation: Patents + Web3 + AI</h3>
-                        <ul class="space-y-2 text-gray-700 dark:text-text-soft">
+                    <div class="e-surface p-8 border-l-4 border-blue-600 dark:border-blue-400">
+                        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-white tracking-tight">Innovation: Patents + Web3 + AI</h3>
+                        <ul class="space-y-3 text-gray-700 dark:text-text-soft leading-relaxed">
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Inventor: 10 patents filed + 1 pending (selected: Smart Contract protocol for payment-on-delivery, USPTO 62654352).</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>Crypto/Web3: built Hyperledger Fabric networks and launched crypto exchanges; implemented custody controls (multisig workflows + custody partner).</span>
                             </li>
                             <li class="flex items-start">
-                                <span class="text-blue-600 dark:text-blue-400 mr-3 mt-1">•</span>
+                                <span class="text-blue-600 dark:text-blue-400 mr-4 mt-0.5 font-bold">•</span>
                                 <span>AI enablement: private first-pass code reviews (Ollama + Qwen 2.5), internal helpdesk AI (DeepSeek), and automation acceleration via MCP integrations.</span>
                             </li>
                         </ul>
@@ -523,17 +535,18 @@
             </div>
         </section>
 
-        <section id="experience" class="py-16">
+        <div class="section-divider"></div>
+        <section id="experience" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">Career Journey</h2>
-                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Explore my professional history through this interactive timeline. Each point represents a significant role in my career. Click on any position to view detailed responsibilities and key accomplishments from that period. The most recent role is selected by default.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-3 tracking-tight">Career Journey</h2>
+                <p class="text-center text-gray-500 dark:text-text-soft max-w-2xl mx-auto mb-16 text-sm uppercase tracking-wide">Professional Experience Timeline</p>
                 <div class="flex flex-col md:flex-row gap-8 md:h-[90vh] md:max-h-[800px] md:overflow-hidden no-print">
                     <div class="w-full md:w-1/3 relative timeline-buttons-container h-full">
-                        <div class="border-l-2 border-blue-200 absolute h-full left-4"></div>
+                        <div class="border-l-2 border-gray-200 dark:border-gray-700 absolute h-full left-4"></div>
                         <div id="timeline-buttons" class="space-y-8 pb-24"></div>
                         <div class="scroll-hint"></div>
                     </div>
-                    <div class="w-full md:w-2/3 bg-white p-8 rounded-xl shadow-lg overflow-y-auto">
+                    <div class="w-full md:w-2/3 bg-transparent p-8 overflow-y-auto">
                         <div id="experience-details">
                         </div>
                     </div>
@@ -541,26 +554,30 @@
             </div>
         </section>
 
-        <section id="patents" class="py-16 bg-white">
+        <div class="section-divider"></div>
+        <section id="patents" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">Patents</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-3 tracking-tight">Patents</h2>
+                <p class="text-center text-gray-500 dark:text-text-soft max-w-2xl mx-auto mb-16 text-sm uppercase tracking-wide">Intellectual Property</p>
                 <div class="max-w-3xl mx-auto text-center">
                     <p class="text-lg text-gray-700 dark:text-text-soft">10 filed | 1 pending (selected: Smart Contract protocol for payment-on-delivery, USPTO 62654352).</p>
                 </div>
             </div>
         </section>
 
+        <div class="section-divider"></div>
         <!-- Add print-page-break class -->
-        <section id="education" class="py-16 print-page-break">
+        <section id="education" class="py-20 print-page-break">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-12">Education</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-3 tracking-tight">Education</h2>
+                <p class="text-center text-gray-500 dark:text-text-soft max-w-2xl mx-auto mb-16 text-sm uppercase tracking-wide">Academic Credentials</p>
                 <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white dark:bg-bg-alt p-6 rounded-lg shadow-md e-surface">
+                    <div class="p-6 border-l-4 border-gray-300 dark:border-gray-600">
                         <p class="text-gray-500 dark:text-text-soft">1996 - 1999</p>
                         <h3 class="text-xl font-bold mt-2">M.S., Database & Network</h3>
                         <p class="text-gray-600 dark:text-text-soft mt-1">University of Washington | Seattle, WA</p>
                     </div>
-                    <div class="bg-white dark:bg-bg-alt p-6 rounded-lg shadow-md e-surface">
+                    <div class="p-6 border-l-4 border-gray-300 dark:border-gray-600">
                         <p class="text-gray-500 dark:text-text-soft">1990 - 1993</p>
                         <h3 class="text-xl font-bold mt-2">B.S., Computer Engineering</h3>
                         <p class="text-gray-600 dark:text-text-soft mt-1">California Polytechnic State University | San Luis Obispo, CA</p>
@@ -570,9 +587,11 @@
             </div>
         </section>
 
-        <section id="technologies" class="py-16 bg-white">
+        <div class="section-divider"></div>
+        <section id="technologies" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">Selected Technologies</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-3 tracking-tight">Selected Technologies</h2>
+                <p class="text-center text-gray-500 dark:text-text-soft max-w-2xl mx-auto mb-16 text-sm uppercase tracking-wide">Technology Stack</p>
                 <div class="max-w-4xl mx-auto">
                     <p class="text-center text-gray-700 dark:text-text-soft text-lg">
                         TypeScript/Python • Next.js • React • NestJS • Kubernetes/Docker • Git • CI/CD • Playwright • OWASP ZAP • WAF • SAST • AWS • Tencent Cloud (QCloud) • Cloudflare • Serverless • MySQL • PostgreSQL • NoSQL • n8n • Airflow • Splunk • LLM/RAG • Ollama • Qwen 2.5 • DeepSeek • MCP • Hyperledger Fabric • Smart Contracts (Web3) • Multisig Wallet
